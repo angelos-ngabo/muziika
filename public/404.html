@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Muziika</title>
+    <script>
+      (function () {
+        var base = "/";
+        var path = window.location.pathname || "/";
+        var search = window.location.search || "";
+        var hash = window.location.hash || "";
+        if (path !== base && path !== base.replace(/\/$/, "")) {
+          sessionStorage.setItem("muziika-spa-redirect", path + search + hash);
+        }
+        window.location.replace(base);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

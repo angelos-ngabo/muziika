@@ -24,13 +24,13 @@ export function redirectByRole(
   navigate: NavigateFunction
 ): void {
   if (role === "admin") {
-    navigate("/admin");
+    navigate("/admin", { replace: true });
   } else if (role === "judge") {
-    navigate("/judge");
+    navigate("/judge", { replace: true });
   } else if (role === "artist") {
-    navigate("/artist/dashboard");
+    navigate("/artist/dashboard", { replace: true });
   } else {
-    navigate("/");
+    navigate("/", { replace: true });
   }
 }
 

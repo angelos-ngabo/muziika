@@ -311,10 +311,26 @@
   background: #1a1a1a;
 }
 
+.mobile-root {
+  height: 100dvh;
+  max-height: 100dvh;
+}
+
+.mobile-bottom-nav {
+  padding-bottom: calc(
+    env(safe-area-inset-bottom, 0px) + var(--mobile-browser-bottom-inset, 0px)
+  );
+}
+
+.mobile-fixed-bottom {
+  bottom: var(--mobile-browser-bottom-inset, 0px);
+}
+
 @media (min-width: 768px) {
   .mobile-root,
   .mobile-status-bar,
-  .mobile-bottom-nav {
+  .mobile-bottom-nav,
+  .mobile-bottom-nav-wrap {
     display: none !important;
   }
 }

@@ -5,6 +5,11 @@ import { MobileScrollContext } from "@/context/MobileScrollContext";
 import { MobileStatusBar } from "@/components/mobile/MobileStatusBar";
 import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import { useMobileNavAutoHide } from "@/hooks/useMobileNavAutoHide";
+import {
+  MOBILE_STATUS_BAR_HEIGHT,
+  useVisualViewportInsets,
+} from "@/hooks/useVisualViewportInsets";
+import { cn } from "@/lib/utils";
 
 interface MobileLayoutProps {
   children: React.ReactNode;
@@ -14,18 +19,18 @@ interface MobileLayoutProps {
 export function MobileLayout({ children, hideBottomNav = false }: MobileLayoutProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const navVisible = useMobileNavAutoHide(scrollRef);
+  useVisualViewportInsets();
 
   return (
     <MobileScrollContext.Provider value={{ scrollRef }}>
-      <div className="mobile-root flex h-[100dvh] flex-col overflow-hidden bg-[#0a0a0a]">
+      <div className="mobile-root flex flex-col overflow-hidden bg-[#0a0a0a]">
         <MobileStatusBar visible={navVisible} />
 
         <div
           ref={scrollRef}
           className="mobile-content min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-y-contain"
           style={{
-            paddingTop: navVisible ? 44 : 0,
-            paddingBottom: hideBottomNav ? 0 : navVisible ? 72 : 0,
+            paddingTop: navVisible ? MOBILE_STATUS_BAR_HEIGHT : 0,
             WebkitOverflowScrolling: "touch",
             transition: "padding 300ms ease",
           }}
@@ -33,7 +38,16 @@ export function MobileLayout({ children, hideBottomNav = false }: MobileLayoutPr
           {children}
         </div>
 
-        {!hideBottomNav && <MobileBottomNav visible={navVisible} />}
+        {!hideBottomNav && (
+          <div
+            className={cn(
+              "mobile-bottom-nav-wrap shrink-0 overflow-hidden transition-[max-height] duration-300 ease-out",
+              navVisible ? "max-h-[160px]" : "max-h-0"
+            )}
+          >
+            <MobileBottomNav />
+          </div>
+        )}
       </div>
     </MobileScrollContext.Provider>
   );

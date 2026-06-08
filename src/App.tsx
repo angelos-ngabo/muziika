@@ -1,9 +1,13 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
 import { ScrollToHash } from "@/components/layout/ScrollToHash";
+import { SpaRedirectRestore } from "@/components/layout/SpaRedirectRestore";
 import { PageTransition } from "@/components/mobile/PageTransition";
+import { NotFoundPage } from "@/components/layout/NotFoundPage";
+
+const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, "") || undefined;
 
 const HomePage = lazy(() => import("@/app/page"));
 
@@ -32,9 +36,10 @@ function PageLoader() {
 
 export function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={routerBasename}>
       <AuthProvider>
         <ScrollToHash />
+        <SpaRedirectRestore />
         <PageTransition>
           <Suspense fallback={<PageLoader />}>
             <Routes>
@@ -45,6 +50,9 @@ export function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/auth/login" element={<Navigate to="/login" replace />} />
+            <Route path="/auth/register" element={<Navigate to="/register" replace />} />
+            <Route path="/auth/forgot-password" element={<Navigate to="/forgot-password" replace />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/admin/submissions" element={<AdminSubmissionsPage />} />
             <Route path="/judge" element={<JudgePage />} />
@@ -53,6 +61,7 @@ export function App() {
             <Route path="/artist/dashboard/submit" element={<ArtistSubmitPage />} />
             <Route path="/artist/dashboard/profile" element={<ArtistProfileDashboardPage />} />
             <Route path="/artist/:id" element={<ArtistProfilePage />} />
+            <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Suspense>
         </PageTransition>

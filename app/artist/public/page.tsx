@@ -129,11 +129,19 @@ function MobileArtistProfile({ submission }: { submission: Submission }) {
 export default function ArtistProfilePage() {
   const params = useParams();
   const id = params.id as string;
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [submission, setSubmission] = useState<Submission | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (id === "dashboard") {
+      navigate("/artist/dashboard", { replace: true });
+    }
+  }, [id, navigate]);
+
+  useEffect(() => {
+    if (id === "dashboard") return;
     async function load() {
       try {
         const data = await getSubmissionById(id);
@@ -146,6 +154,10 @@ export default function ArtistProfilePage() {
     }
     load();
   }, [id]);
+
+  if (id === "dashboard") {
+    return null;
+  }
 
   if (isMobile) {
     return (

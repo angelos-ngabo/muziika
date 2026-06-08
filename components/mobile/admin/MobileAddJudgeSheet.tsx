@@ -95,7 +95,7 @@ export function MobileAddJudgeSheet({
 
       <div
         className={cn(
-          "fixed bottom-0 left-0 right-0 z-[300] max-h-[85vh] overflow-y-auto rounded-t-[24px] bg-[#111111] pb-[env(safe-area-inset-bottom)] transition-transform duration-300 md:hidden",
+          "fixed bottom-0 left-0 right-0 z-[300] max-h-[85vh] overflow-y-auto rounded-t-[24px] bg-[#111111] mobile-fixed-bottom pb-[env(safe-area-inset-bottom)] transition-transform duration-300 md:hidden",
           open ? "translate-y-0" : "translate-y-full"
         )}
         style={dragY > 0 ? { transform: `translateY(${dragY}px)` } : undefined}

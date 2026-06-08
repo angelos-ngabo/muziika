@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,32 +15,86 @@ interface ProtectedRouteProps {
   requiredRole: UserRole;
 }
 
+function ProtectedLoading() {
+  return (
+    <div className="relative flex min-h-screen items-center justify-center bg-hero-bg font-space text-white">
+      <MusicBackgroundDecorations />
+      <div className="relative z-10 w-64 space-y-4">
+        <Skeleton className="h-8 w-full bg-white/10" />
+        <Skeleton className="h-32 w-full bg-white/10" />
+        <Skeleton className="h-8 w-3/4 bg-white/10" />
+      </div>
+    </div>
+  );
+}
+
+async function hasFirebaseSession(): Promise<boolean> {
+  try {
+    const { getFirebaseAuth } = await import("@/lib/firebase");
+    const auth = await getFirebaseAuth();
+    return Boolean(auth.currentUser);
+  } catch {
+    return false;
+  }
+}
+
 export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const [resolving, setResolving] = useState(true);
 
   useEffect(() => {
-    if (!loading) {
-      if (!user) {
-        navigate("/login", { replace: true });
-      } else if (user.role !== requiredRole) {
-        navigate("/login", { replace: true });
+    let cancelled = false;
+    let retryTimer: ReturnType<typeof setTimeout> | undefined;
+
+    async function resolveAccess() {
+      if (loading) return;
+
+      if (user?.role === requiredRole) {
+        if (!cancelled) setResolving(false);
+        return;
       }
+
+      if (user && user.role !== requiredRole) {
+        if (!cancelled) {
+          setResolving(false);
+          navigate("/login", { replace: true });
+        }
+        return;
+      }
+
+      const sessionActive = await hasFirebaseSession();
+      if (cancelled) return;
+
+      if (sessionActive) {
+        setResolving(true);
+        retryTimer = setTimeout(() => {
+          if (!cancelled) setResolving(false);
+        }, 4000);
+        return;
+      }
+
+      setResolving(false);
+      navigate("/login", { replace: true });
     }
+
+    void resolveAccess();
+
+    return () => {
+      cancelled = true;
+      if (retryTimer) clearTimeout(retryTimer);
+    };
   }, [user, loading, requiredRole, navigate]);
 
-  if (loading) {
-    return (
-      <div className="relative flex min-h-screen items-center justify-center bg-hero-bg font-space text-white">
-        <MusicBackgroundDecorations />
-        <div className="relative z-10 space-y-4 w-64">
-          <Skeleton className="h-8 w-full bg-white/10" />
-          <Skeleton className="h-32 w-full bg-white/10" />
-          <Skeleton className="h-8 w-3/4 bg-white/10" />
-        </div>
-      </div>
-    );
+  useEffect(() => {
+    if (user?.role === requiredRole) {
+      setResolving(false);
+    }
+  }, [user, requiredRole]);
+
+  if (loading || resolving) {
+    return <ProtectedLoading />;
   }
 
   if (!user || user.role !== requiredRole) {

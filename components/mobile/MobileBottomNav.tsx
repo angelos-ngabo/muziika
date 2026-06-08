@@ -65,7 +65,7 @@ const NAV_ITEMS = [
   { id: "artists", label: "ARTISTS", path: "/explore", Icon: UsersIcon, center: false },
 ] as const;
 
-export function MobileBottomNav({ visible = true }: { visible?: boolean }) {
+export function MobileBottomNav() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, userRole } = useAuth();
@@ -96,12 +96,7 @@ export function MobileBottomNav({ visible = true }: { visible?: boolean }) {
 
   return (
     <>
-      <nav
-        className={cn(
-          "mobile-bottom-nav fixed bottom-0 left-0 right-0 z-[200] flex h-[72px] items-center justify-around border-t border-[#1f1f1f] bg-[#0f0f0f] pb-[env(safe-area-inset-bottom)] transition-transform duration-300 ease-out",
-          !visible && "translate-y-full"
-        )}
-      >
+      <nav className="mobile-bottom-nav z-[200] flex min-h-[72px] items-center justify-around border-t border-[#1f1f1f] bg-[#0f0f0f]">
         {NAV_ITEMS.map((item) => {
           const active = isActive(item.path, item.id);
 
