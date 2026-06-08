@@ -2,7 +2,6 @@
 
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import { cn } from "@/lib/utils";
 
 function SearchIcon() {
   return (
@@ -31,17 +30,12 @@ function UserIcon() {
   );
 }
 
-export function MobileStatusBar({ visible = true }: { visible?: boolean }) {
+export function MobileStatusBar() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
   return (
-    <header
-      className={cn(
-        "mobile-status-bar fixed left-0 right-0 top-0 z-[200] flex h-11 items-center justify-between bg-[#0a0a0a] px-5 transition-transform duration-300 ease-out",
-        !visible && "-translate-y-full"
-      )}
-    >
+    <header className="mobile-status-bar fixed left-0 right-0 top-0 z-[200] flex h-11 items-center justify-between bg-[#0a0a0a]/95 px-5 backdrop-blur-md">
       <div className="flex min-w-0 flex-1 items-center gap-2.5">
         <Link to="/" className="shrink-0">
           <img src="/logo.svg" alt="Muziika" className="h-7 w-auto" />

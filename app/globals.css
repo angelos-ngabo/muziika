@@ -312,13 +312,54 @@
 }
 
 .mobile-root {
-  height: 100dvh;
-  max-height: 100dvh;
+  height: var(--mobile-vvh, 100dvh);
+  max-height: var(--mobile-vvh, 100dvh);
+}
+
+.mobile-content {
+  padding-bottom: var(--mobile-content-bottom-padding, 88px);
 }
 
 .mobile-bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 250;
+  min-height: 72px;
   padding-bottom: calc(
     env(safe-area-inset-bottom, 0px) + var(--mobile-browser-bottom-inset, 0px)
+  );
+}
+
+.mobile-profile-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 400;
+  bottom: var(--mobile-content-bottom-padding, 88px);
+  max-height: calc(
+    var(--mobile-vvh, 100dvh) - var(--mobile-content-bottom-padding, 88px) - 52px
+  );
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-profile-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 399;
+}
+
+.mobile-content-bottom-padding {
+  --mobile-content-bottom-padding: calc(
+    72px + env(safe-area-inset-bottom, 0px) + var(--mobile-browser-bottom-inset, 0px)
+  );
+}
+
+:root {
+  --mobile-content-bottom-padding: calc(
+    72px + env(safe-area-inset-bottom, 0px) + var(--mobile-browser-bottom-inset, 0px)
   );
 }
 
@@ -330,7 +371,8 @@
   .mobile-root,
   .mobile-status-bar,
   .mobile-bottom-nav,
-  .mobile-bottom-nav-wrap {
+  .mobile-profile-sheet,
+  .mobile-profile-sheet-backdrop {
     display: none !important;
   }
 }

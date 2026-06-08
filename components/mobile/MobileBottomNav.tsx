@@ -96,7 +96,7 @@ export function MobileBottomNav() {
 
   return (
     <>
-      <nav className="mobile-bottom-nav z-[200] flex min-h-[72px] items-center justify-around border-t border-[#1f1f1f] bg-[#0f0f0f]">
+      <nav className="mobile-bottom-nav flex items-center justify-around border-t border-[#1f1f1f] bg-[#0f0f0f]/98 backdrop-blur-md">
         {NAV_ITEMS.map((item) => {
           const active = isActive(item.path, item.id);
 

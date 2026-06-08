@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useIsMobile } from "@/hooks/useMediaQuery";
@@ -83,8 +84,13 @@ export function ProfileSheet({ open, onClose }: ProfileSheetProps) {
   const { user, userRole, signOut } = useAuth();
   const isMobile = useIsMobile();
   const [mounted, setMounted] = useState(false);
+  const [portalReady, setPortalReady] = useState(false);
   const [dragY, setDragY] = useState(0);
   const touchStartY = useRef(0);
+
+  useEffect(() => {
+    setPortalReady(true);
+  }, []);
 
   useEffect(() => {
     if (open) {
@@ -99,7 +105,7 @@ export function ProfileSheet({ open, onClose }: ProfileSheetProps) {
     };
   }, [open]);
 
-  if (!open && !mounted) return null;
+  if (!portalReady || (!open && !mounted)) return null;
 
   const displayName = user?.name ?? user?.email?.split("@")[0] ?? "User";
   const initials = getInitials(displayName);
@@ -177,13 +183,13 @@ export function ProfileSheet({ open, onClose }: ProfileSheetProps) {
     setDragY(0);
   };
 
-  return (
+  const sheet = (
     <>
       <button
         type="button"
         aria-label="Close profile menu"
         className={cn(
-          "fixed inset-0 z-[299] border-none bg-black/60 transition-opacity duration-300",
+          "mobile-profile-sheet-backdrop border-none bg-black/60 transition-opacity duration-300",
           open ? "opacity-100" : "pointer-events-none opacity-0"
         )}
         onClick={onClose}
@@ -191,8 +197,8 @@ export function ProfileSheet({ open, onClose }: ProfileSheetProps) {
 
       <div
         className={cn(
-          "fixed bottom-0 left-0 right-0 z-[300] max-h-[60vh] rounded-t-[24px] bg-[#111111] mobile-fixed-bottom pb-[env(safe-area-inset-bottom)] transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
-          open ? "translate-y-0" : "translate-y-full"
+          "mobile-profile-sheet rounded-t-[24px] bg-[#111111] pb-4 shadow-[0_-12px_40px_rgba(0,0,0,0.45)] transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
+          open ? "translate-y-0" : "translate-y-full pointer-events-none"
         )}
         style={dragY > 0 ? { transform: `translateY(${dragY}px)` } : undefined}
         onTransitionEnd={() => {
@@ -202,17 +208,19 @@ export function ProfileSheet({ open, onClose }: ProfileSheetProps) {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="mx-auto mb-5 mt-3 h-1 w-10 rounded-sm bg-[#2a2a2a]" />
+        <div className="sticky top-0 z-10 bg-[#111111] pt-3">
+          <div className="mx-auto mb-4 h-1 w-10 rounded-sm bg-[#2a2a2a]" />
 
-        <div className="border-b border-[#1f1f1f] px-6 pb-5">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-hero-orange font-space text-2xl font-bold text-white">
-            {initials.charAt(0)}
+          <div className="border-b border-[#1f1f1f] px-6 pb-5">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-hero-orange font-space text-2xl font-bold text-white">
+              {initials.charAt(0)}
+            </div>
+            <p className="mt-3 font-space text-lg font-bold text-white">{displayName}</p>
+            <p className="font-space text-xs text-[#888888]">{user?.email}</p>
+            <span className="mt-2 inline-block rounded-[50px] border border-hero-orange bg-[#1a1a1a] px-3 py-1 font-space text-[10px] uppercase text-hero-orange">
+              {roleLabel(userRole)}
+            </span>
           </div>
-          <p className="mt-3 font-space text-lg font-bold text-white">{displayName}</p>
-          <p className="font-space text-xs text-[#888888]">{user?.email}</p>
-          <span className="mt-2 inline-block rounded-[50px] border border-hero-orange bg-[#1a1a1a] px-3 py-1 font-space text-[10px] uppercase text-hero-orange">
-            {roleLabel(userRole)}
-          </span>
         </div>
 
         <div className="py-2">
@@ -238,4 +246,6 @@ export function ProfileSheet({ open, onClose }: ProfileSheetProps) {
       </div>
     </>
   );
+
+  return createPortal(sheet, document.body);
 }

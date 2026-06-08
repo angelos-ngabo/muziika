@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-/** Tracks iOS browser chrome (e.g. Chrome bottom bar) so fixed/flex bottom UI stays visible. */
+/** Syncs visual viewport metrics for iOS browser chrome (Chrome/Safari bottom bar). */
 export function useVisualViewportInsets() {
   useEffect(() => {
     const root = document.documentElement;
@@ -10,11 +10,13 @@ export function useVisualViewportInsets() {
     const update = () => {
       const vv = window.visualViewport;
       if (!vv) {
+        root.style.setProperty("--mobile-vvh", "100dvh");
         root.style.setProperty("--mobile-browser-bottom-inset", "0px");
         return;
       }
 
       const bottomInset = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      root.style.setProperty("--mobile-vvh", `${vv.height}px`);
       root.style.setProperty("--mobile-browser-bottom-inset", `${bottomInset}px`);
     };
 
@@ -29,6 +31,7 @@ export function useVisualViewportInsets() {
       window.visualViewport?.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
       window.removeEventListener("orientationchange", update);
+      root.style.removeProperty("--mobile-vvh");
       root.style.removeProperty("--mobile-browser-bottom-inset");
     };
   }, []);
