@@ -2,6 +2,7 @@
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { useDesktopNavAutoHide } from "@/hooks/useDesktopNavAutoHide";
 import { MAIN_NAV, scrollToSection, type NavItem } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
@@ -55,10 +56,18 @@ function NavLink({
 export function Navbar() {
   const { user, loading } = useAuth();
   const { pathname, hash } = useLocation();
+  const navVisible = useDesktopNavAutoHide();
 
   return (
-    <header className="relative z-[100] h-[72px] bg-hero-bg">
-      <div className="mx-auto flex h-full max-w-[1440px] items-center justify-between px-6 md:px-12">
+    <>
+      <div className="h-[72px] shrink-0" aria-hidden="true" />
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-[100] h-[72px] bg-hero-bg/90 backdrop-blur-md transition-transform duration-300 ease-out",
+          !navVisible && "-translate-y-full"
+        )}
+      >
+        <div className="mx-auto flex h-full max-w-[1440px] items-center justify-between px-6 md:px-12">
         <Link
           to="/"
           className="rounded-[50px] bg-hero-orange px-5 py-2 font-space text-base font-bold uppercase tracking-[0.05em] text-white"
@@ -122,6 +131,7 @@ export function Navbar() {
         </div>
       </div>
     </header>
+    </>
   );
 }
 
