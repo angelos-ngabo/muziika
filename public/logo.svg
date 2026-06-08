@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" fill="none">
+  <defs>
+    <linearGradient id="wordmark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B5179E"/>
+      <stop offset="50%" stop-color="#FF6B9D"/>
+      <stop offset="100%" stop-color="#7209B7"/>
+    </linearGradient>
+    <linearGradient id="mic" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E879F9"/>
+      <stop offset="100%" stop-color="#A855F7"/>
+    </linearGradient>
+  </defs>
+  <!-- Microphone stand below -->
+  <rect x="156" y="58" width="8" height="18" rx="2" fill="url(#mic)"/>
+  <ellipse cx="160" cy="78" rx="14" ry="3" fill="url(#mic)" opacity="0.6"/>
+  <!-- Microphone body through center -->
+  <rect x="152" y="28" width="16" height="32" rx="8" fill="url(#mic)"/>
+  <!-- Mic grille lines -->
+  <line x1="156" y1="34" x2="164" y2="34" stroke="#fff" stroke-width="0.8" opacity="0.4"/>
+  <line x1="156" y1="38" x2="164" y2="38" stroke="#fff" stroke-width="0.8" opacity="0.4"/>
+  <line x1="156" y1="42" x2="164" y2="42" stroke="#fff" stroke-width="0.8" opacity="0.4"/>
+  <!-- Mic head above text -->
+  <ellipse cx="160" cy="22" rx="18" ry="14" fill="url(#mic)"/>
+  <ellipse cx="160" cy="22" rx="12" ry="9" fill="#1a1a2e" opacity="0.5"/>
+  <!-- Wordmark MUZIIKA - serif bold with gap for mic -->
+  <text x="10" y="54" font-family="Georgia, 'Times New Roman', serif" font-size="42" font-weight="700" fill="url(#wordmark)" letter-spacing="4">MUZ</text>
+  <text x="178" y="54" font-family="Georgia, 'Times New Roman', serif" font-size="42" font-weight="700" fill="url(#wordmark)" letter-spacing="4">KA</text>
+  <!-- II letters split around mic -->
+  <text x="118" y="54" font-family="Georgia, 'Times New Roman', serif" font-size="42" font-weight="700" fill="url(#wordmark)" letter-spacing="2">I</text>
+  <text x="138" y="54" font-family="Georgia, 'Times New Roman', serif" font-size="42" font-weight="700" fill="url(#wordmark)" letter-spacing="2">I</text>
+</svg>

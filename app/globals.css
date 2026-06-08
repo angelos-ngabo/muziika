@@ -1,0 +1,320 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 243 90% 59%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 243 90% 59%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 7%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 280 80% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 0 0% 14%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 280 80% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Homepage decorative elements matching Figma */
+.hero-glow-orange {
+  background: radial-gradient(ellipse at center, rgba(217, 99, 25, 0.3) 0%, transparent 70%);
+}
+
+.hero-glow-white {
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+}
+
+.waveform-bar {
+  @apply rounded-full bg-muziika-orange-accent;
+}
+
+/* Auth left panel — template orbs blended with Muziika homepage palette */
+.auth-orb-purple {
+  background: radial-gradient(
+    circle,
+    rgba(181, 23, 158, 0.35) 0%,
+    rgba(114, 9, 183, 0.15) 45%,
+    transparent 70%
+  );
+}
+
+.auth-orb-orange {
+  background: radial-gradient(
+    circle,
+    rgba(217, 99, 25, 0.25) 0%,
+    transparent 70%
+  );
+}
+
+@keyframes auth-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes auth-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.auth-card-enter {
+  animation: auth-slide-up 300ms ease-out forwards;
+}
+
+.animate-auth-fade-in {
+  animation: auth-fade-in 200ms ease-out forwards;
+}
+
+@keyframes hero-wave {
+  0%,
+  100% {
+    height: var(--wave-base);
+  }
+  50% {
+    height: var(--wave-peak);
+  }
+}
+
+.hero-wave-bar {
+  animation: hero-wave 1.2s ease-in-out infinite;
+}
+
+/* Music Dashboard — Muziika orange system tone */
+.dashboard-sidebar {
+  background: rgba(10, 10, 10, 0.28);
+  border-right: 1px solid rgba(217, 99, 25, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.dashboard-search-bar {
+  background: rgba(26, 18, 8, 0.38);
+  border: 1px solid rgba(217, 99, 25, 0.18);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.dashboard-right-panel {
+  background: rgba(10, 10, 10, 0.28);
+  border-left: 1px solid rgba(217, 99, 25, 0.14);
+  box-shadow: -6px 4px 80px 0px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.dashboard-glass {
+  background: rgba(26, 18, 8, 0.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.dashboard-glass-subtle {
+  background: rgba(217, 99, 25, 0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.dashboard-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(217, 99, 25, 0.6) 0%,
+    rgba(255, 139, 6, 0.15) 100%
+  );
+}
+
+@keyframes submit-success-pop {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.submit-success-check {
+  animation: submit-success-pop 400ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes submit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.submit-btn-spinner {
+  animation: submit-spin 700ms linear infinite;
+}
+
+/* ── Mobile app experience (<768px) ── */
+@media (max-width: 767px) {
+  .mobile-tap {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  .mobile-tap:active {
+    transform: scale(0.97);
+    transition: transform 100ms ease;
+  }
+
+  .mobile-scroll-x {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .mobile-scroll-x::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-content {
+    scroll-behavior: smooth;
+  }
+
+  .mobile-root input,
+  .mobile-root textarea,
+  .mobile-root select {
+    font-size: 16px !important;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.mobile-skeleton-shimmer {
+  background: linear-gradient(90deg, #111111 25%, #1a1a1a 50%, #111111 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.page-enter {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.page-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition:
+    transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 200ms ease;
+}
+
+.page-exit {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.page-exit-active {
+  transform: translateX(-30%);
+  opacity: 0;
+  transition:
+    transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 200ms ease;
+}
+
+.mobile-score-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #1a1a1a;
+  outline: none;
+}
+
+.mobile-score-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ff6b00;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+}
+
+.mobile-score-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ff6b00;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+}
+
+.mobile-score-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: #1a1a1a;
+}
+
+@media (min-width: 768px) {
+  .mobile-root,
+  .mobile-status-bar,
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+}
