@@ -1,11 +1,11 @@
 # Muziika
 
-A Next.js 14 music talent platform for discovering, judging, and featuring African artists.
+A music talent platform for discovering, judging, and featuring African artists.
 
 ## Tech Stack
 
-- Next.js 14 (App Router) + TypeScript
-- Firebase v9 (Firestore, Auth)
+- Vite + React Router + TypeScript
+- Firebase (Firestore, Auth)
 - Tailwind CSS + Shadcn/UI
 
 ## Getting Started
@@ -19,7 +19,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:5173](http://localhost:5173).
 
 ## Mock Data
 
